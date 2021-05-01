@@ -57,6 +57,13 @@
             </div>
         </div>
 
+        <p>
+            <!-- 表达式 -->
+            <!-- 类型总数: {{ types.length + "门"}} -->
+            <!-- 计算属性 -->
+            类型总数：{{total}}
+        </p>
+
 
     </div>
 
@@ -70,9 +77,8 @@
             data() {
                 return {
                     title: 'this is a title',
-                    // types: ['web', 'app'],
-                    types: [ ],
-
+                    types: ['web', 'app'],
+                    // types: [ ],
                     imput_msg: 'please input',
                     selectedType: '',
                 }
@@ -85,6 +91,11 @@
                     this.imput_msg = ''
                 }
             },
+            computed: {
+                total() {
+                    return this.types.length + "门";
+                }
+            },
 
         })
 
@@ -93,6 +104,7 @@
             app.title ='mua, hello vue'
             
         }, 1000);
+
     </script>
     
 </body>
