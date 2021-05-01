@@ -25,10 +25,15 @@
         <!-- 简写:title -->
 
         <h2 v-bind:title="title"> 
-
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
+        
+        <!-- 列表渲染 -->
+        <div v-for="type in types" :key="type">
+            {{ type }}
+        </div>
+
     </div>
 
     <!-- 引入vue.js -->
@@ -40,7 +45,8 @@
             el: '#app',
             data() {
                 return {
-                    title: 'this is a title'
+                    title: 'this is a title',
+                    types: ['web', 'app'],
                 }
             },
         })
