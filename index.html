@@ -29,18 +29,17 @@
            {{title}}
         </h2> 
 
-        <!-- 用户输入 v-model 双向绑定 -->
+        <!-- 用户输入 -->
         <p>
-            <input type="text" v-model="imput_msg">
+            <input type="text" v-model="imput_msg" v-on:keydown.enter='addType'>
             <!-- {{imput_msg}} -->
+            <button @click = 'addType'> add </button>
         </p>
         
         <!-- 列表渲染 -->
         <div v-for="type in types" :key="type">
             {{ type }}
         </div>
-
-     
 
     </div>
 
@@ -58,7 +57,17 @@
                     imput_msg: 'please input',
                 }
             },
+            methods: {
+                addType() {
+                    //, 添加type到types
+                    this.types.push(this.imput_msg)
+                    //,  清空输入框
+                    this.imput_msg = ''
+                }
+            },
+
         })
+
         // 设置定时器,1s钟以后换标题
         setTimeout(() => {
             app.title ='mua, hello vue'
