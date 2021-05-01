@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 宿主文件 -->
+    <div id="app">
+        {{title}}
+    </div>
+
+    <!-- 引入vue.js -->
+    <script src="vue.js"></script>
+
+    <script>
+        // 1.创建vue实例,传入配置对象，宿主文件el是app
+        const app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    title: 'this is a title'
+                }
+            },
+        })
+        // 设置定时器,1s钟以后换标题
+        setTimeout(() => {
+            app.title ='mua, hello vue'
+            
+        }, 1000);
+    </script>
+
+    
+</body>
+</html>
