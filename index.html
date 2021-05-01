@@ -44,7 +44,10 @@
         </p>
         
         <!-- 列表渲染 -->
-        <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
+        <!-- <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
+            {{ type }}
+        </div> -->
+        <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
             {{ type }}
         </div>
 
