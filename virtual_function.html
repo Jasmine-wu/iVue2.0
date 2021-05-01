@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <style>
+        .active {
+            background-color: #ddd;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- 
+        Vue 核心设计理念：
+            - 数据驱动应用
+            - 典型的MVVM模式：Model /View/ViewModel(vue完成了ViewModel这层)  
+        MVVM框架三要素：
+            - 响应式->数据响应式
+	        - 模版-> vue是如何解析模版的？
+	        - 渲染 ->vue 先把模版转换成js函数（渲染），数据发生变化时，会重新执行渲染函数，得到最新的结果就是虚拟dom，我们要做的就是把虚拟dom变成真实的dom。
+        Vue起到的作用就是链接我们的视图层View和数据层（Modle），Vue把数据dataBing绑定到我们的视图层, 同时也监听事件变化，反向修改数据模型（Modle）
+     -->
+
+    <!-- 宿主文件View(模版)->Dom -->
+    <div id="app"></div>
+
+    <!-- 引入vue.js -->
+    <script src="vue.js"></script>
+
+    <script>
+        // 1.创建vue实例,传入配置对象，宿主文件el是app
+        const app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    title: 'this is a title',
+                    types: ['web', 'app'],
+                    // types: [ ],
+                    imput_msg: 'please input',
+                    selectedType: '',
+                }
+            },
+            methods: {
+                addType() {
+                    //, 添加type到types
+                    this.types.push(this.imput_msg)
+                    //,  清空输入框
+                    this.imput_msg = ''
+                }
+            },
+            
+            render() {
+                with(this) {
+                    return _c('div',{attrs:{"id":"app"}},[_c('h2',{attrs:{"title":title}},[_v("\n           "+_s(title)+"\n        ")]),_v(" "),_c('p',[_c('input',{directives:[{name:"model",rawName:"v-model",value:(imput_msg),expression:"imput_msg"}],attrs:{"type":"text"},domProps:{"value":(imput_msg)},on:{"keydown":function($event){if(!$event.type.indexOf('key')&&_k($event.keyCode,"enter",13,$event.key,"Enter"))return null;return addType($event)},"input":function($event){if($event.target.composing)return;imput_msg=$event.target.value}}}),_v(" "),_c('button',{on:{"click":addType}},[_v(" add ")])]),_v(" "),(types.length == 0)?_c('p',[_v("\n            没人任何type信息\n        ")]):_c('div',{staticClass:"type list"},_l((types),function(type){return _c('div',{key:type,style:({backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}),on:{"click":function($event){selectedType = type}}},[_v("\n                "+_s(type)+"\n            ")])}),0)])}
+            }
+        })
+
+     
+        // 打印生成的渲染js函数
+        // console.log(app.$options.render);
+
+    </script>
+    
+</body>
+</html>
