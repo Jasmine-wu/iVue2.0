@@ -42,14 +42,21 @@
             <!-- {{imput_msg}} -->
             <button @click = 'addType'> add </button>
         </p>
-        
+        <!-- 条件渲染 -->
+        <!-- v-if 和 v-for 不要放在一个标签上他们有优先级的不同 -->
+        <p v-if = "types.length == 0">
+            没人任何type信息
+        </p>        
         <!-- 列表渲染 -->
         <!-- <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
             {{ type }}
         </div> -->
-        <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-            {{ type }}
+        <div class="type list" v-else>
+            <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
+                {{ type }}
+            </div>
         </div>
+
 
     </div>
 
@@ -63,7 +70,9 @@
             data() {
                 return {
                     title: 'this is a title',
-                    types: ['web', 'app'],
+                    // types: ['web', 'app'],
+                    types: [ ],
+
                     imput_msg: 'please input',
                     selectedType: '',
                 }
