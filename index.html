@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>购物车</title>
+    <style>
+        .active {
+            background-color: #ddd;
+        }
+    </style>
+    
 </head>
 <body>
     <!-- 
@@ -38,7 +44,7 @@
         </p>
         
         <!-- 列表渲染 -->
-        <div v-for="type in types" :key="type">
+        <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
             {{ type }}
         </div>
 
@@ -56,6 +62,7 @@
                     title: 'this is a title',
                     types: ['web', 'app'],
                     imput_msg: 'please input',
+                    selectedType: '',
                 }
             },
             methods: {
