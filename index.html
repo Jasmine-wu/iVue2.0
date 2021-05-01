@@ -63,6 +63,11 @@
             <!-- 计算属性 -->
             类型总数：{{total}}
         </p>
+        <p>
+            <!-- 监听器 -->
+            类型总数：{{totalCount}}
+
+        </p>
 
 
     </div>
@@ -81,6 +86,7 @@
                     // types: [ ],
                     imput_msg: 'please input',
                     selectedType: '',
+                    totalCount: '',
                 }
             },
             methods: {
@@ -94,6 +100,22 @@
             computed: {
                 total() {
                     return this.types.length + "门";
+                }
+            },
+
+            // watch: {
+            //     types(newValue, oldValue) {
+            //         this.totalCount = this.types.length + "门";
+                    
+            //     }
+            // },
+            watch: {
+                types: {
+                    immediate: true,
+                    // deep: true,
+                    handler(newValue, oldValue) {
+                        this.totalCount = this.types.length + "门";
+                    }
                 }
             },
 
