@@ -220,7 +220,12 @@
                 },
                 batchUpdate() {
                     this.types.forEach(c => {
-                        Vue.set(c, 'price', this.type_price)
+                        // 动态设置属性,写法1
+                        // Vue.set(c, 'price', this.type_price)
+
+                        // 写法2
+                        this.$set(c, 'price', this.type_price)
+                        //不生效,view不会更新
                         // c.price = this.price
                     });
                 }
