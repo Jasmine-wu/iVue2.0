@@ -40,7 +40,7 @@
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
 
-        <message :show="isShow" @close="close"> 
+        <message :show="isShow" @close="isShow=$event"> 
             <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
             添加类型成功!
         </message>
@@ -86,7 +86,7 @@
             <div class="message-box" v-if="show">
                 <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
                 <slot></slot>
-                <span class="message-box-close" @click="close">x</span>
+                <span class="message-box-close" @click="$emit('close', false)">x</span>
             </div>
             `
         }),
@@ -196,9 +196,7 @@
                         this.isShow = true
                     }
                 },
-                close() {
-                    this.isShow = false
-                }
+    
             },
 
             // created(){}
