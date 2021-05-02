@@ -54,7 +54,7 @@
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
 
-        <message :show.sync="isShow" class="success"> 
+        <message ref="msgSuccess" class="success"> 
             
             <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
             <!-- 具名插槽 -->
@@ -72,7 +72,7 @@
             </template>
         </message>
 
-        <message :show.sync="isShowWarning" class="warning"> 
+        <message ref="msgWarn" class="warning"> 
   
             <template v-slot:title="slotProps">
                 <strong> 警告</strong>
@@ -125,10 +125,15 @@
 
         //自定义弹窗组件
         Vue.component("message", {
-            props: ["show"],
+
+            data() {
+                return {
+                    show: false
+                }
+            },
             methods: {
-                close() {
-                    this.$emit("close")     
+                toggle() {
+                    this.show = !this.show
                 }
             },
             template:
@@ -139,13 +144,13 @@
 
                 <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
                 <slot></slot>
-                <span class="message-box-close" @click="$emit('update:show', false)">x</span>
+                <span class="message-box-close" @click="toggle">x</span>
             </div>
             `,
             mounted(){
                 // 用注册的总线监听message-close，当收到message-close，就执行一个方法()=>{}：关闭弹框
                 this.$bus.$on('message-close', ()=> {
-                    this.$emit('update:show', false)
+                    this.toggle()
                 })
             }
         }),
@@ -257,9 +262,9 @@
                     if(this.input_type) {
                         this.types.push({name:this.input_type})
                         this.input_type = ''
-                        this.isShow = true
+                        this.$refs.msgSuccess.toggle()
                     }else {
-                        this.isShowWarning = true
+                        this.$refs.msgWarn.toggle()
                     }
                 },
                 batchUpdate() {
