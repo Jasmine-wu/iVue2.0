@@ -41,8 +41,19 @@
         <!-- 简写:title -->
 
         <message :show.sync="isShow" > 
+            
             <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
-            添加类型成功!
+            <!-- 具名插槽 -->
+            <!-- 用户内容复杂，需要各种组装拼接 -->
+            <template v-slot:title>
+                <!-- 恭喜 -->
+                <!-- <strong>恭喜</strong> -->
+                <h2>恭喜</h2>
+            </template>
+            <!-- 默认插槽 v-slot="default 可省" -->
+            <template >
+                添加类型成功!
+            </template>
         </message>
 
         <h2 v-bind:title="title"> 
@@ -84,6 +95,9 @@
             template:
             `
             <div class="message-box" v-if="show">
+                <!-- 具名插槽 -->
+                <slot name="title"></slot>
+
                 <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
                 <slot></slot>
                 <span class="message-box-close" @click="$emit('update:show', false)">x</span>
