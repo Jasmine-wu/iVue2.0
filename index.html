@@ -62,8 +62,13 @@
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
+        <!-- v-model.number 绑定数字型 -->
+        <type-add v-model.number="input_type" @input="input_type=$event" @add-type="addType"> </type-add>
 
-        <type-add v-model="input_type" @input="input_type=$event" @add-type="addType"> </type-add>
+        <!-- 批量更新价格 -->
+        <p><input type="text" v-model="type_price" >
+            <button @click="batchUpdate"> 批量更新价格</button>
+        </p>
 
         <type-list :types="types"> </type-list>
 
@@ -174,8 +179,8 @@
                     {{ type }}
                 </div> -->
                 <div class="type list" v-else>
-                    <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-                        {{ type }}
+                    <div v-for="type in types" :key="type.name" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
+                        {{ type.name }} - {{type.price}}
                     </div>
                 </div>
             </div>   
@@ -186,7 +191,7 @@
         function getTypes() {
             return new Promise(resolve => { 
                setTimeout(() => {
-                resolve (['web', 'app'])}, 2000);
+                resolve ([{name:'web'}, {name:'app'}])}, 2000);
             }) }
 
         // 1.创建vue实例,传入配置对象，宿主文件el是app
@@ -200,6 +205,7 @@
                     // types: [ ],
                     totalCount: '',
                     isShow: false,
+                    type_price:0,
                 }
             },
 
@@ -212,7 +218,12 @@
                         this.isShow = true
                     }
                 },
-    
+                batchUpdate() {
+                    this.types.forEach(c => {
+                        Vue.set(c, 'price', this.type_price)
+                        // c.price = this.price
+                    });
+                }
             },
 
             // created(){}
@@ -220,6 +231,9 @@
             async created(){
                 const type = await getTypes()
                 this.types = type
+
+                // 批量初始赋值price属性
+                this.batchUpdate()
             },
 
             computed: {
