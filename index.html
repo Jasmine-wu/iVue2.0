@@ -34,14 +34,7 @@
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
-
-        <!-- 用户输入 -->
-        <p>
-            <!-- v-model 不加再次在input输入,输入不会写入到model imput_msg 里面-->
-            <input type="text" v-model="imput_msg" v-on:keydown.enter='addType'>
-            <!-- {{imput_msg}} -->
-            <button @click = 'addType'> add </button>
-        </p>
+        <type-add @add-type="addType"> </type-add>
 
         <type-list :types="types"> </type-list>
 
@@ -56,7 +49,6 @@
             类型总数：{{totalCount}}
         </p>
 
-
     </div>
 
     <!-- 引入vue.js -->
@@ -64,6 +56,36 @@
 
 
     <script>
+        // 添加课程组件
+        Vue.component("type-add",{
+            data() {
+                return {
+                    imput_msg: 'please input',
+                }
+            },
+
+            methods: {
+                addType() {
+                    //, 派发⌚事件通知父组件新增课程
+                    // add-type 组件绑定的方法
+                    this.$emit("add-type", this.imput_msg) 
+                    this.imput_msg = ''  
+                }
+            },
+
+            template: 
+            `
+            <div>
+                <!-- 用户输入 -->
+                <p>
+                    <!-- v-model 不加再次在input输入,输入不会写入到model imput_msg 里面-->
+                    <input type="text" v-model="imput_msg" v-on:keydown.enter='addType'>
+                    <!-- {{imput_msg}} -->
+                    <button @click = 'addType'> add </button>
+                </p>
+            </div>
+            `
+        })
         // 组件化类型列表
         Vue.component("type-list",{
 
@@ -119,8 +141,16 @@
                     title: 'this is a title',
                     types: [],
                     // types: [ ],
-                    imput_msg: 'please input',
                     totalCount: '',
+                }
+            },
+
+            methods: {
+                addType(type) {
+                    //, 添加type到types
+                    if(type.length > 0) {
+                        this.types.push(type)
+                    }
                 }
             },
 
@@ -131,18 +161,6 @@
                 this.types = type
             },
 
-
-            methods: {
-                addType() {
-                    //, 添加type到types
-                    if(this.imput_msg.length > 0) {
-                        this.types.push(this.imput_msg)
-                    }
-                    //,  清空输入框
-                    this.imput_msg = ''
-
-                }
-            },
             computed: {
                 total() {
                     return this.types.length + "门";
