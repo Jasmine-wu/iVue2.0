@@ -66,7 +66,6 @@
         <p>
             <!-- 监听器 -->
             类型总数：{{totalCount}}
-
         </p>
 
 
@@ -76,25 +75,42 @@
     <script src="vue.js"></script>
 
     <script>
+        // 模拟异步调用
+        function getTypes() {
+            return new Promise(resolve => { 
+               setTimeout(() => {
+                resolve (['web', 'app'])}, 2000);
+            }) }
+
         // 1.创建vue实例,传入配置对象，宿主文件el是app
         const app = new Vue({
             el: '#app',
             data() {
                 return {
                     title: 'this is a title',
-                    types: ['web', 'app'],
+                    types: [],
                     // types: [ ],
                     imput_msg: 'please input',
                     selectedType: '',
                     totalCount: '',
                 }
             },
+
+            // created(){}
+            // mounted(){}
+            async created(){
+                const type = await getTypes()
+                this.types = type
+            },
+
+
             methods: {
                 addType() {
                     //, 添加type到types
                     this.types.push(this.imput_msg)
                     //,  清空输入框
                     this.imput_msg = ''
+
                 }
             },
             computed: {
@@ -119,13 +135,15 @@
                 }
             },
 
+
+
         })
 
         // 设置定时器,1s钟以后换标题
-        setTimeout(() => {
-            app.title ='mua, hello vue'
+        // setTimeout(() => {
+        //     app.title ='mua, hello vue'
             
-        }, 1000);
+        // }, 1000);
 
     </script>
     
