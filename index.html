@@ -32,6 +32,17 @@
             /* border: 1px solid rgb(189, 255, 102); */
 
         }
+        /* 动画样式 */
+        /* 入场之前和退场之后的状态 */
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+        
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 1s;
+        }
 
     </style>
     
@@ -138,14 +149,17 @@
             },
             template:
             `
-            <div class="message-box" v-if="show">
-                <!-- 具名插槽 -->
-                <slot name="title" title="来自子组件传递过来的内容"></slot>
+            <transition name="fade">
+                <div class="message-box" v-if="show">
+                    <!-- 具名插槽 -->
+                    <slot name="title" title="来自子组件传递过来的内容"></slot>
 
-                <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
-                <slot></slot>
-                <span class="message-box-close" @click="toggle">x</span>
-            </div>
+                    <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
+                    <slot></slot>
+                    <span class="message-box-close" @click="toggle">x</span>
+                </div>
+            </transition>
+            
             `,
             mounted(){
                 // 用注册的总线监听message-close，当收到message-close，就执行一个方法()=>{}：关闭弹框
