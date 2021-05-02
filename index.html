@@ -34,7 +34,7 @@
         }
         /* 动画样式 */
         /* 入场之前和退场之后的状态 */
-        .fade-enter,
+        /* .fade-enter,
         .fade-leave-to {
             opacity: 0;
         }
@@ -42,10 +42,11 @@
         .fade-enter-active,
         .fade-leave-active {
             transition: opacity 1s;
-        }
+        } */
 
     </style>
-    
+    <!--引入第三方动画库Animation.css  -->
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 </head>
 <body>
     <!-- 
@@ -149,7 +150,8 @@
             },
             template:
             `
-            <transition name="fade">
+            <!-- <transition name="fade">-->
+            <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
                 <div class="message-box" v-if="show">
                     <!-- 具名插槽 -->
                     <slot name="title" title="来自子组件传递过来的内容"></slot>
