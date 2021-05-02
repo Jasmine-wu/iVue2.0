@@ -45,10 +45,12 @@
             <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
             <!-- 具名插槽 -->
             <!-- 用户内容复杂，需要各种组装拼接 -->
-            <template v-slot:title>
+            <template v-slot:title="slotProps">
                 <!-- 恭喜 -->
                 <!-- <strong>恭喜</strong> -->
-                <h2>恭喜</h2>
+                <!-- <h2>恭喜</h2> -->
+                <!-- {{title}} -->
+                {{slotProps.title}}
             </template>
             <!-- 默认插槽 v-slot="default 可省" -->
             <template >
@@ -96,7 +98,7 @@
             `
             <div class="message-box" v-if="show">
                 <!-- 具名插槽 -->
-                <slot name="title"></slot>
+                <slot name="title" title="来自子组件传递过来的内容"></slot>
 
                 <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
                 <slot></slot>
