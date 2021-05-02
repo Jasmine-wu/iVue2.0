@@ -34,7 +34,7 @@
         }
         /* 动画样式 */
         /* 入场之前和退场之后的状态 */
-        /* .fade-enter,
+        .fade-enter,
         .fade-leave-to {
             opacity: 0;
         }
@@ -42,7 +42,7 @@
         .fade-enter-active,
         .fade-leave-active {
             transition: opacity 1s;
-        } */
+        }
 
     </style>
     <!--引入第三方动画库Animation.css  -->
@@ -241,9 +241,11 @@
                     {{ type }}
                 </div> -->
                 <div class="type list" v-else>
-                    <div v-for="type in types" :key="type.name" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-                        {{ type.name }} - {{type.price}}
-                    </div>
+                    <transition-group name="fade">
+                        <div v-for="type in types" :key="type.name" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
+                            {{ type.name }} - {{type.price}}
+                        </div>
+                    </transition-group>
                 </div>
             </div>   
             `
