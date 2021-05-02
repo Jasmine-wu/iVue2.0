@@ -9,6 +9,16 @@
         .active {
             background-color: #ddd;
         }
+        .message-box {
+            padding: 10px 20px;
+            background: #4fc08d;
+            border: 1px solid #42b983;
+        }
+        /* x内容向右浮动 */
+        .message-box-close {
+            float: right;
+        }
+
     </style>
     
 </head>
@@ -30,6 +40,11 @@
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
 
+        <message :show="isShow" @close="close"> 
+            <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
+            添加类型成功!
+        </message>
+
         <h2 v-bind:title="title"> 
          <!-- 插值文本{{}} -->
            {{title}}
@@ -49,15 +64,33 @@
             <!-- 监听器 -->
             类型总数：{{totalCount}}
         </p>
-
     </div>
+  
+
 
     <!-- 引入vue.js -->
     <script src="vue.js"></script>
 
 
     <script>
-        // 添加课程组件
+        //自定义弹窗组件
+        Vue.component("message", {
+            props: ["show"],
+            methods: {
+                close() {
+                    this.$emit("close")     
+                }
+            },
+            template:
+            `
+            <div class="message-box" v-if="show">
+                <!-- 插槽-占位，表示这个组件的内容从外面传入 -->
+                <slot></slot>
+                <span class="message-box-close" @click="close">x</span>
+            </div>
+            `
+        }),
+        // 添加类型组件
         Vue.component("type-add",{
             props: ["value"],
             data() {
@@ -76,7 +109,8 @@
                 onInput(e) {
                     //, 派发⌚事件,返回value值
                     this.$emit('input', e.target.value) 
-                }
+                },
+    
             },
 
             template: 
@@ -149,6 +183,7 @@
                     input_type : 'please input',
                     // types: [ ],
                     totalCount: '',
+                    isShow: false,
                 }
             },
 
@@ -158,7 +193,11 @@
                     if(this.input_type.length > 0) {
                         this.types.push(this.input_type)
                         this.input_type = ''
+                        this.isShow = true
                     }
+                },
+                close() {
+                    this.isShow = false
                 }
             },
 
