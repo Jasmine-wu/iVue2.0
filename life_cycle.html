@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vue源码剖析</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="demo">
+<h1>初始化流程</h1>
+        <p>{{foo}}</p>
+    </div>
+<script>
+// 创建实例
+
+// 关于Vue的生命周期，下列哪项是不正确的?(B)[单选题]
+//A、Vue 实例从创建到销毁的过程，就是生命周期。
+//B、页面首次加载会触发beforeCreate, created, beforeMount, mounted, beforeUpdate, updated。 
+//C、created表示完成数据观测，属性和方法的运算，初始化事件，$el属性还没有显示出来。
+//D、DOM渲染在mounted中就已经完成了 
+const app = new Vue({
+            el: '#demo',
+            data:{
+                foo: 'foo' 
+            },
+            beforeCreate(){console.log('beforeCreate')},
+            // created这一步，模版文件还没被挂载
+            created(){console.log('created '+this.$el)},
+            beforeMount(){console.log('beforeMount')},
+            mounted(){
+                setTimeout(() => {
+                    this.foo = 'foooooo'
+                }, 2000);
+                console.log('mounted '+this.$el)},
+            beforeUpdate(){console.log('beforeUpdate')},
+            updated(){console.log('updated')},
+});
+    </script>
+</body>
+</html>
