@@ -11,12 +11,26 @@
         }
         .message-box {
             padding: 10px 20px;
-            background: #4fc08d;
-            border: 1px solid #42b983;
+            /* background: #4fc08d; */
+            /* border: 1px solid #42b983; */
         }
         /* x内容向右浮动 */
         .message-box-close {
             float: right;
+        }
+
+        .success {
+            background: #4fc08d;
+            border: 1px solid #42b983;        }
+
+        .warning {
+            background: #f66;
+            border: 1px solid #f66 right;
+        }
+        .toolBar {
+            background: rgb(189, 255, 102);
+            /* border: 1px solid rgb(189, 255, 102); */
+
         }
 
     </style>
@@ -40,7 +54,7 @@
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
 
-        <message :show.sync="isShow" > 
+        <message :show.sync="isShow" class="success"> 
             
             <!-- 因为组件封装那里用了插槽，这里的内容才可以被传递进去  -->
             <!-- 具名插槽 -->
@@ -58,10 +72,25 @@
             </template>
         </message>
 
+        <message :show.sync="isShowWarning" class="warning"> 
+  
+            <template v-slot:title="slotProps">
+                <strong> 警告</strong>
+            </template>
+
+            <template >
+                请输入类型
+            </template>
+        </message>
+
         <h2 v-bind:title="title"> 
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
+        <!-- toolBar -->
+        <div class="toolBar"> 
+            <button @click="$bus.$emit('message-close')"> 清空提示框</button>
+        </div>
         <!-- v-model.number 绑定数字型 -->
         <type-add v-model.number="input_type" @input="input_type=$event" @add-type="addType"> </type-add>
 
@@ -91,6 +120,9 @@
 
 
     <script>
+        // 注册到总线
+        Vue.prototype.$bus = new Vue();
+
         //自定义弹窗组件
         Vue.component("message", {
             props: ["show"],
@@ -109,7 +141,13 @@
                 <slot></slot>
                 <span class="message-box-close" @click="$emit('update:show', false)">x</span>
             </div>
-            `
+            `,
+            mounted(){
+                // 用注册的总线监听message-close，当收到message-close，就执行一个方法()=>{}：关闭弹框
+                this.$bus.$on('message-close', ()=> {
+                    this.$emit('update:show', false)
+                })
+            }
         }),
         // 添加类型组件
         Vue.component("type-add",{
@@ -206,16 +244,19 @@
                     totalCount: '',
                     isShow: false,
                     type_price:0,
+                    isShowWarning: false
                 }
             },
 
             methods: {
                 addType() {
                     //, 添加type到types
-                    if(this.input_type.length > 0) {
-                        this.types.push(this.input_type)
+                    if(this.input_type) {
+                        this.types.push({name:this.input_type})
                         this.input_type = ''
                         this.isShow = true
+                    }else {
+                        this.isShowWarning = true
                     }
                 },
                 batchUpdate() {
