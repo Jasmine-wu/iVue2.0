@@ -34,7 +34,8 @@
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
-        <type-add @add-type="addType"> </type-add>
+
+        <type-add v-model="input_type" @input="input_type=$event" @add-type="addType"> </type-add>
 
         <type-list :types="types"> </type-list>
 
@@ -58,18 +59,23 @@
     <script>
         // 添加课程组件
         Vue.component("type-add",{
+            props: ["value"],
             data() {
                 return {
-                    imput_msg: 'please input',
+                    input_type: 'please input',
                 }
             },
 
             methods: {
                 addType() {
-                    //, 派发⌚事件通知父组件新增课程
-                    // add-type 组件绑定的方法
-                    this.$emit("add-type", this.imput_msg) 
-                    this.imput_msg = ''  
+                    //, 派发⌚事件
+                    //. addType 这里写addType不会生效
+                    this.$emit("add-type") 
+                },
+
+                onInput(e) {
+                    //, 派发⌚事件,返回value值
+                    this.$emit('input', e.target.value) 
                 }
             },
 
@@ -79,7 +85,7 @@
                 <!-- 用户输入 -->
                 <p>
                     <!-- v-model 不加再次在input输入,输入不会写入到model imput_msg 里面-->
-                    <input type="text" v-model="imput_msg" v-on:keydown.enter='addType'>
+                    <input type="text" :value="value" @input="onInput" v-on:keydown.enter='addType'>
                     <!-- {{imput_msg}} -->
                     <button @click = 'addType'> add </button>
                 </p>
@@ -140,16 +146,18 @@
                 return {
                     title: 'this is a title',
                     types: [],
+                    input_type : 'please input',
                     // types: [ ],
                     totalCount: '',
                 }
             },
 
             methods: {
-                addType(type) {
+                addType() {
                     //, 添加type到types
-                    if(type.length > 0) {
-                        this.types.push(type)
+                    if(this.input_type.length > 0) {
+                        this.types.push(this.input_type)
+                        this.input_type = ''
                     }
                 }
             },
