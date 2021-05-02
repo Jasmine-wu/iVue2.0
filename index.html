@@ -42,20 +42,8 @@
             <!-- {{imput_msg}} -->
             <button @click = 'addType'> add </button>
         </p>
-        <!-- 条件渲染 -->
-        <!-- v-if 和 v-for 不要放在一个标签上他们有优先级的不同 -->
-        <p v-if = "types.length == 0">
-            没人任何type信息
-        </p>        
-        <!-- 列表渲染 -->
-        <!-- <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
-            {{ type }}
-        </div> -->
-        <div class="type list" v-else>
-            <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-                {{ type }}
-            </div>
-        </div>
+
+        <type-list :types="types"> </type-list>
 
         <p>
             <!-- 表达式 -->
@@ -74,7 +62,48 @@
     <!-- 引入vue.js -->
     <script src="vue.js"></script>
 
+
     <script>
+        // 组件化类型列表
+        Vue.component("type-list",{
+
+            data() {
+                return {
+                    selectedType: '',
+                }
+            },
+            // 属性定义的两种方法
+            // props : ["types"],
+            // 推荐第二种，方便属性校验
+            props: {
+                types:{
+                    type: Array,
+                    default: []
+                }
+            },
+
+            template: 
+            `
+            <!-- 加根节点 -->
+            <div>
+                <!-- 条件渲染 -->
+                <!-- v-if 和 v-for 不要放在一个标签上他们有优先级的不同 -->
+                <p v-if = "types.length ===0">
+                    没人任何type信息
+                </p>        
+                <!-- 列表渲染 -->
+                <!-- <div v-for="type in types" :key="type"  :class="{active: selectedType === type}" @click="selectedType = type">
+                    {{ type }}
+                </div> -->
+                <div class="type list" v-else>
+                    <div v-for="type in types" :key="type" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
+                        {{ type }}
+                    </div>
+                </div>
+            </div>   
+            `
+        })
+
         // 模拟异步调用
         function getTypes() {
             return new Promise(resolve => { 
@@ -91,7 +120,6 @@
                     types: [],
                     // types: [ ],
                     imput_msg: 'please input',
-                    selectedType: '',
                     totalCount: '',
                 }
             },
@@ -107,7 +135,9 @@
             methods: {
                 addType() {
                     //, 添加type到types
-                    this.types.push(this.imput_msg)
+                    if(this.imput_msg.length > 0) {
+                        this.types.push(this.imput_msg)
+                    }
                     //,  清空输入框
                     this.imput_msg = ''
 
@@ -134,8 +164,6 @@
                     }
                 }
             },
-
-
 
         })
 
