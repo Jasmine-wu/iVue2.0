@@ -248,7 +248,7 @@
                 <div class="type list" v-else>
                     <transition-group name="fade">
                         <div v-for="type in types" :key="type.name" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-                            {{ type.name }} - {{type.price | curentcy }}
+                            {{ type.name }} - {{type.price | curentcy('$$$') }}
                         </div>
                     </transition-group>
                 </div>
@@ -256,9 +256,10 @@
             `,
 
             // 定义一个局部的过滤器
+            // symbol='$' 默认值
             filters: {
-                curentcy: function(price) {
-                    return '$' + price;
+                curentcy: function(value, symbol='$') {
+                    return symbol + value;
                 }
             }
         })
