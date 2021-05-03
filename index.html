@@ -135,6 +135,11 @@
         // 注册到总线
         Vue.prototype.$bus = new Vue();
 
+        // 定义全局的过滤器
+        Vue.filter("filterName", function(filterContent){
+            return contentAfterfilter
+        })
+
         //自定义弹窗组件
         Vue.component("message", {
 
@@ -243,12 +248,19 @@
                 <div class="type list" v-else>
                     <transition-group name="fade">
                         <div v-for="type in types" :key="type.name" :style="{backgroundColor: (selectedType === type ? '#ddd' : 'transparent')}" @click="selectedType = type">
-                            {{ type.name }} - {{type.price}}
+                            {{ type.name }} - {{type.price | curentcy }}
                         </div>
                     </transition-group>
                 </div>
             </div>   
-            `
+            `,
+
+            // 定义一个局部的过滤器
+            filters: {
+                curentcy: function(price) {
+                    return '$' + price;
+                }
+            }
         })
 
         // 模拟异步调用
