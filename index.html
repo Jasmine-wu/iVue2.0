@@ -65,6 +65,9 @@
         <!-- <h2 title="{{title}}">  这是错的，我们要用v-bind指令-->
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
+        <heading level="1">
+            {{title}}
+        </heading>
 
         <message ref="msgSuccess" class="success"> 
             
@@ -95,7 +98,7 @@
             </template>
         </message>
 
-        <h2 v-bind:title="title"> 
+        <h2 v-bind:title="title" >
          <!-- 插值文本{{}} -->
            {{title}}
         </h2> 
@@ -136,6 +139,24 @@
         const role = 'admin';
         // 注册到总线
         Vue.prototype.$bus = new Vue();
+
+        // 使用render函数定义heading组件
+        Vue.component('heading',{
+            // 类型校验，必须是String,且必填
+            props: {
+                level : {
+                    type: String,
+                    required: true
+                }
+            },
+            render(h) {
+                console.log(this.$slots.default)
+                return h (
+                    'h'+ this.level, //参数1，tagName
+                    this.$slots.default,//  参数3
+                )
+            }
+        })
 
         // 定义全局的过滤器
         Vue.filter("filterName", function(filterContent){
