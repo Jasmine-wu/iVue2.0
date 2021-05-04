@@ -44,9 +44,20 @@
             transition: opacity 1s;
         }
 
+        /* 自定义图标的样式，在网站上下载至本地，打开demo_index.html可以找到symbol代码自定义的样式 */
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
     </style>
     <!--引入第三方动画库Animation.css  -->
     <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+    <!-- 引入iconfont.cn上的某个图标资源+https:// -->
+    <script src="http://at.alicdn.com/t/font_2526637_gy34z6gr336.js"></script>
 </head>
 <body>
     <!-- 
@@ -65,7 +76,19 @@
         <!-- <h2 title="{{title}}">  这是错的，我们要用v-bind指令-->
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
-        <heading level="1" :title="'title1111'">
+        <!-- <heading level="1" :title="'title1111'" >
+            {{title}}
+        </heading> -->
+
+        <!-- 原生heading组件 -->
+        <!-- class:添加样式，操作参考下载的symbol代码 -->
+        <h2 >
+            <svg class="icon"><use xlink:href="#icon-A-25"></use></svg>
+            {{title}}
+        </h2>
+
+        <!-- renderh函数渲染自定义heading组件 -->
+        <heading :title="'title'" level="2" icon="A-25">
             {{title}}
         </heading>
 
@@ -142,23 +165,43 @@
 
         // 使用render函数定义heading组件
         Vue.component('heading',{
-            // 类型校验，必须是String,且必填
             props: {
+                // 类型校验，必须是String,且必填
                 level : {
                     type: String,
                     required: true
                 },
+                // 类型校验，必须是String,且默认为空
                 title : {
                     type: String,
                     default: ''
+                },
+                icon: {
+                    type: String
                 }
             },
             render(h) {
+                // 构造子元素
+                // 子节点数组
+                let children = []
+                //icon 属性的处理逻辑
+                if(this.icon) {
+                    // <svg class="icon"><use xlink:href="#icon-A-25"></use></svg>                    
+                    children.push(h(
+                        'svg',
+                        {class: 'icon'},
+                        //子节点
+                        [ h('use',{attrs:{'xlink:href': '#icon-'+this.icon}})]
+                    ))
+                }
+                //拼接内容到子节点
+                children = children.concat(this.$slots.default)
+
                 console.log(this.$slots.default)
                 const vNode = h (
                     'h'+ this.level, //参数1，tagName
                     {attrs:{ title: this.title}},//参数2，data
-                    this.$slots.default,//  参数3,子节点Vnode数组
+                    children,//  参数3,子节点Vnode数组
                 )
                 console.log(vNode)
                 return vNode
