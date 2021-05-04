@@ -65,7 +65,7 @@
         <!-- <h2 title="{{title}}">  这是错的，我们要用v-bind指令-->
         <!-- v-bind:title="title" 把data里的title值绑定到h2的title属性上-->
         <!-- 简写:title -->
-        <heading level="1">
+        <heading level="1" :title="'title1111'">
             {{title}}
         </heading>
 
@@ -147,14 +147,21 @@
                 level : {
                     type: String,
                     required: true
+                },
+                title : {
+                    type: String,
+                    default: ''
                 }
             },
             render(h) {
                 console.log(this.$slots.default)
-                return h (
+                const vNode = h (
                     'h'+ this.level, //参数1，tagName
-                    this.$slots.default,//  参数3
+                    {attrs:{ title: this.title}},//参数2，data
+                    this.$slots.default,//  参数3,子节点Vnode数组
                 )
+                console.log(vNode)
+                return vNode
             }
         })
 
