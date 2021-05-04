@@ -158,6 +158,17 @@
 
 
     <script>
+        // 定义一个混入!对象
+        const myMixin = {
+            created () {
+                this.hello();
+            },
+            methods: {
+                hello() {
+                    console.log("混入一个hello method")
+                }
+            },
+        }
         // 模拟用户登陆
         const role = 'admin';
         // 注册到总线
@@ -239,6 +250,8 @@
 
         //自定义弹窗组件
         Vue.component("message", {
+            // 可加入多个混入对象
+            mixins: [myMixin],
 
             data() {
                 return {
