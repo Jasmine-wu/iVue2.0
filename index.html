@@ -100,8 +100,8 @@
            {{title}}
         </h2> 
         <!-- toolBar -->
-        <div class="toolBar"> 
-            <button @click="$bus.$emit('message-close')"> 清空提示框</button>
+        <div class="toolBar" v-permission="'jasmine'"> 
+            <button @click="$bus.$emit('message-close')" > 清空提示框</button>
         </div>
         <!-- v-model.number 绑定数字型 -->
         <type-add v-model.number="input_type" @input="input_type=$event" @add-type="addType"> </type-add>
@@ -132,6 +132,8 @@
 
 
     <script>
+        // 模拟用户登陆
+        const role = 'admin';
         // 注册到总线
         Vue.prototype.$bus = new Vue();
 
@@ -142,8 +144,20 @@
 
         // 自定义全局指令
         Vue.directive("focus",{
+            // 钩子函数
             inserted(el){
                 el.focus()
+            }
+        })
+
+        // 自定义全局指令
+        Vue.directive('permission',{
+            inserted(el, binding){
+                console.log(binding)
+                // 若当前用户不是admin，移除该指令作用的元素
+                if (binding.value != role) {
+                    el.parentElement.removeChild(el)
+                }
             }
         })
 
