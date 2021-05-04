@@ -140,6 +140,13 @@
             return contentAfterfilter
         })
 
+        // 自定义全局指令
+        Vue.directive("focus",{
+            inserted(el){
+                el.focus()
+            }
+        })
+
         //自定义弹窗组件
         Vue.component("message", {
 
@@ -197,9 +204,9 @@
                 },
             },
 
-            mounted () {
-                this.$refs.inp.focus();
-            },
+            // mounted () {
+            //     this.$refs.inp.focus();
+            // },
     
             template: 
             `
@@ -207,7 +214,7 @@
                 <!-- 用户输入 -->
                 <p>
                     <!-- v-model 不加再次在input输入,输入不会写入到model imput_msg 里面-->
-                    <input type="text" :value="value" @input="onInput" v-on:keydown.enter='addType' ref="inp">
+                    <input type="text" :value="value" @input="onInput" v-on:keydown.enter='addType' v-focus>
                     <!-- {{imput_msg}} -->
                     <button @click = 'addType'> add </button>
                 </p>
